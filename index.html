@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quarterly Earnings — Interactive Report</title>
+
+    <!-- RevealJS core CSS (CDN quick-start) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/theme/white.css" id="theme">
+
+    <!-- Optional: Highlight.js default styles (used by RevealHighlight plugin) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/default.min.css">
+
+    <style>
+      /* small custom styling */
+      .reveal { font-family: Inter, Arial, sans-serif; }
+      .contact { font-size: 0.9rem; opacity: 0.95; }
+      .chart { width: 100%; height: 420px; margin-top: 12px; }
+    </style>
+  </head>
+  <body>
+
+    <div class="reveal">
+      <div class="slides">
+
+        <!-- Title slide -->
+        <section>
+          <h1>Quarterly Earnings — Q4</h1>
+          <p class="contact">Prepared by: Financial Analytics Team &nbsp;|&nbsp; Contact: 23f2000387@ds.study.iitm.ac.in</p>
+          <aside class="notes">
+            Welcome slide — introduce the team and high-level highlights. Mention you'll walk through KPI, variance drivers and recommendations.
+          </aside>
+        </section>
+
+        <!-- Markdown slide (uses RevealMarkdown) -->
+        <section data-markdown>
+          <textarea data-template>
+
+## Executive Summary (Markdown slide)
+
+- Revenue up **6.4%** QoQ
+- Net Margin improved from **8.1% → 9.6%**
+- Primary driver: cost optimization in operations
+
+---
+
+## Next steps
+
+1. Validate forecast assumptions
+2. Prioritize top 3 cost initiatives
+3. Approve $2.5M CAPEX for automation
+
+          </textarea>
+        </section>
+
+        <!-- Animated fragments -->
+        <section>
+          <h2>Key Financial Drivers</h2>
+          <ul>
+            <li class="fragment">Revenue mix shift toward higher-margin products</li>
+            <li class="fragment">Improved utilization of fixed assets</li>
+            <li class="fragment fade-up">Lower variable costs due to supplier renegotiation</li>
+          </ul>
+          <aside class="notes">Use this slide to walk stakeholders through the three big drivers. Click to reveal each fragment.</aside>
+        </section>
+
+        <!-- Code sample with syntax highlighting -->
+        <section>
+          <h2>Sample: Calculate YoY Growth (Python)</h2>
+          <pre><code class="language-python"># YoY growth calculation
+def yoy_growth(current, prior):
+    return (current - prior) / prior * 100
+
+revenue_current = 12_450_000
+revenue_prior   = 11_700_000
+print(f"YoY growth: {yoy_growth(revenue_current, revenue_prior):.2f}%")
+          </code></pre>
+          <aside class="notes">Show the calculation and explain assumptions (currency, one-time items removed).</aside>
+        </section>
+
+        <!-- Math formula (RevealMath) -->
+        <section>
+          <h2>Financial Formula</h2>
+          <p>Bayes-style probability for risk adjustment (example):</p>
+          <p>\[P(D|F) = \frac{P(F|D)\,P(D)}{P(F)}\]</p>
+          <p>Also common: Net Present Value (NPV):</p>
+          <p>\[NPV = \sum_{t=0}^{T} \frac{C_t}{(1+r)^t}\]</p>
+          <aside class="notes">Explain what each term represents and show a simple worked example live if asked.</aside>
+        </section>
+
+        <!-- Example D3 placeholder (interactive visual) -->
+        <section id="chart-slide">
+          <h2>Interactive Revenue Chart</h2>
+          <div id="chart" class="chart"></div>
+          <aside class="notes">This placeholder updates when the slide is shown; in production link to real data or an Observable plot.</aside>
+        </section>
+
+        <!-- Speaker-notes heavy slide -->
+        <section>
+          <h2>Recommendations & Ask</h2>
+          <ul>
+            <li class="fragment">Approve automation CAPEX</li>
+            <li class="fragment">Prioritize supplier renegotiation</li>
+            <li class="fragment">Pilot pricing experiment in Region B</li>
+          </ul>
+          <aside class="notes">
+            End with a clear ask: approvals and owners. Suggest 2-week deep-dive follow-up and assign PMs.
+          </aside>
+        </section>
+
+      </div>
+    </div>
+
+    <!-- RevealJS core script + plugins (CDN) -->
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+
+    <!-- Plugins -->
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/markdown/markdown.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/math/math.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/notes/notes.js"></script>
+
+    <!-- Simple demo: render a tiny D3 chart when the chart slide is shown -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+
+    <script>
+      // Initialize Reveal with common plugins
+      Reveal.initialize({
+        width: 1280,
+        height: 720,
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+        transition: 'slide',
+        plugins: [ RevealMarkdown, RevealHighlight, RevealMath, RevealNotes ]
+      });
+
+      // Update chart when slide becomes active
+      const sampleData = [ {q: 'Q1', v: 9.2}, {q: 'Q2', v: 10.7}, {q: 'Q3', v: 11.7}, {q: 'Q4', v: 12.45} ];
+
+      function drawChart() {
+        const container = document.getElementById('chart');
+        container.innerHTML = '';
+        const w = container.clientWidth, h = container.clientHeight;
+        const svg = d3.select(container).append('svg').attr('viewBox', `0 0 ${w} ${h}`);
+        const x = d3.scaleBand().domain(sampleData.map(d=>d.q)).range([40, w-20]).padding(0.3);
+        const y = d3.scaleLinear().domain([0, d3.max(sampleData, d=>d.v)*1.2]).range([h-30, 20]);
+        svg.append('g').selectAll('rect').data(sampleData).enter().append('rect')
+           .attr('x', d=>x(d.q))
+           .attr('y', d=>y(d.v))
+           .attr('width', x.bandwidth())
+           .attr('height', d=>h-30 - y(d.v))
+           .attr('opacity', 0)
+           .transition().duration(800).attr('opacity', 1);
+        svg.append('g').call(d3.axisLeft(y)).attr('transform', 'translate(40,0)');
+        svg.append('g').call(d3.axisBottom(x)).attr('transform', `translate(0,${h-30})`);
+      }
+
+      Reveal.addEventListener('slidechanged', function(event) {
+        if (event.currentSlide && event.currentSlide.id === 'chart-slide') drawChart();
+      });
+
+      // Also draw on first load if starting on that slide
+      Reveal.addEventListener('ready', function(event){ if (event.currentSlide.id === 'chart-slide') drawChart(); });
+    </script>
+  </body>
+</html>
